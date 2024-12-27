@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Reminder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .reminder-container {
+            max-width: 500px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+        }
+        .reminder-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, select, button {
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #28a745;
+            color: #fff;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .reminder-message {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+
+<div class="reminder-container">
+    <h2>Payment Reminder</h2>
+    <form id="reminderForm" class="reminder-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required placeholder="Enter your name">
+        
+        <label for="dueDate">Due Date:</label>
+        <input type="date" id="dueDate" name="dueDate" required>
+        
+        <label for="amount">Amount Due:</label>
+        <input type="number" id="amount" name="amount" required placeholder="Enter amount due">
+        
+        <button type="submit">Set Reminder</button>
+    </form>
+
+    <div id="reminderMessage" class="reminder-message"></div>
+</div>
+
+<script>
+    document.getElementById('reminderForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const dueDate = new Date(document.getElementById('dueDate').value);
+        const amount = document.getElementById('amount').value;
+        
+        const today = new Date();
+        const daysLeft = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
+
+        let message = `Hello, ${name}.`;
+        
+        if (daysLeft > 0) {
+            message += ` Your payment of $${amount} is due in ${daysLeft} days on ${dueDate.toDateString()}.`;
+        } else if (daysLeft === 0) {
+            message += ` Your payment of $${amount} is due today.`;
+        } else {
+            message += ` Your payment of $${amount} was due ${Math.abs(daysLeft)} days ago.`;
+        }
+
+        document.getElementById('reminderMessage').innerText = message;
+    });
+</script>
+
+</body>
+</html>
